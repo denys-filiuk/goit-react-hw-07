@@ -1,9 +1,9 @@
 import "./App.css";
-import ContactList from "./components/ConatctList/ContactList";
-import ContactForm from "./components/ContactForm/ContactForm";
-import SearchBox from "./components/SearchBox/SearchBox";
+import { lazy, Suspense, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+const ContactList = lazy(() => import("./components/ContactList/ContactList"));
+const ContactForm = lazy(() => import("./components/ContactForm/ContactForm"));
+const SearchBox = lazy(() => import("./components/SearchBox/SearchBox"));
 import { fetchContacts } from "./redux/contactsOps";
 
 export default function App() {
@@ -16,9 +16,13 @@ export default function App() {
   return (
     <>
       <p className="phonebook">Phonebook</p>
-      <ContactForm />
-      <SearchBox />
-      <ContactList />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ContactForm />
+
+        <SearchBox />
+
+        <ContactList />
+      </Suspense>
     </>
   );
 }
